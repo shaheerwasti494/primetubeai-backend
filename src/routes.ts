@@ -1,5 +1,5 @@
 // src/routes.ts
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import { ytSearch, ytVideos } from "./youtube.js";
 import { getTokenForPage, storeTokenForPage } from "./pagination.js";
 import type { ItemDto, Paged, VideoData, ChannelData } from "./types.js";
@@ -35,7 +35,7 @@ function timeAgo(iso?: string): string | undefined {
 }
 
 // ---- SUGGEST (simple heuristic) ----
-router.get("/v1/suggest", async (req, res) => {
+router.get("/v1/suggest", async (req: Request, res: Response) => {
   const q = String(req.query.q || "").trim();
   if (!q) return res.json({ suggestions: [] });
   try {
@@ -58,7 +58,7 @@ router.get("/v1/suggest", async (req, res) => {
 });
 
 // ---- TRENDING ----
-router.get("/v1/trending", async (req, res) => {
+router.get("/v1/trending", async (req: Request, res: Response) => {
   const region = String(req.query.region || "US");
   const page = Math.max(1, parseInt(String(req.query.page || 1), 10));
   try {
@@ -92,7 +92,7 @@ router.get("/v1/trending", async (req, res) => {
 });
 
 // ---- SEARCH (videos + lightweight stats) ----
-router.get("/v1/search", async (req, res) => {
+router.get("/v1/search", async (req: Request, res: Response) => {
   const q = String(req.query.q || "");
   const page = Math.max(1, parseInt(String(req.query.page || 1), 10));
   if (!q) return res.json({ items: [], nextPage: null });
@@ -152,7 +152,7 @@ router.get("/v1/search", async (req, res) => {
 });
 
 // ---- CHANNELS ----
-router.get("/v1/channels", async (req, res) => {
+router.get("/v1/channels", async (req: Request, res: Response) => {
   const q = String(req.query.q || "");
   const page = Math.max(1, parseInt(String(req.query.page || 1), 10));
   if (!q) return res.json({ items: [], nextPage: null });
